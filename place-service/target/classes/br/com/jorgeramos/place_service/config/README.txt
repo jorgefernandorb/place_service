@@ -1,0 +1,1 @@
+PlaceConfig: configura o placedservice

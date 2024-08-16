@@ -1,0 +1,9 @@
+br\com\jorgeramos\place_service\PlaceServiceApplication.class
+br\com\jorgeramos\place_service\config\PlaceConfig.class
+br\com\jorgeramos\place_service\domain\Place.class
+br\com\jorgeramos\place_service\domain\PlaceService.class
+br\com\jorgeramos\place_service\api\PlaceResponse.class
+br\com\jorgeramos\place_service\api\PlaceRequest.class
+br\com\jorgeramos\place_service\domain\PlaceRepository.class
+br\com\jorgeramos\place_service\web\PlaceController.class
+br\com\jorgeramos\place_service\web\PlaceMapper.class

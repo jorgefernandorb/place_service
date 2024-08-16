@@ -1,0 +1,3 @@
+Place: definição da entidade domain, suas propriedades e etc. Uso de record ao inves de class, serve para facilitar e deixar menos verboso a criação de objetos que não precisam ser mutaveis, util na criação de CRUD. Usado para plain ou object, só possui atributos e gets/sets.
+PlaceRepository: será o repositorio que ira trabalhar com a entidade Place, esse repositorio será uma interface, sempre no spring data usar este repositorio como interface.
+PlaceService: será o responsavel pelas regras de negocio na aplicação, usa o repositorio que é injetado pelo spring, a partir da ai possui a operação de criação.
