@@ -1,86 +1,37 @@
-Place Service
-    Tecnologias
-        Spring Boot
-        Spring Webflux
-        Spring Data + R2DBC
-        SpringDoc OpenAPI 3
-        Slugify
-    Práticas Adotadas
-SOLID: Princípios de design de software para manter a modularidade e a facilidade de manutenção.
-Testes Automatizados: Implementação de testes para garantir a funcionalidade correta e a integridade do código.
-Consultas com Filtros Dinâmicos: Uso do Query By Example para permitir consultas flexíveis e dinâmicas.
-API Reativa: Implementação de uma API reativa tanto na camada web quanto na camada de banco de dados.
-Uso de DTOs: Utilização de Data Transfer Objects (DTOs) para expor apenas as propriedades necessárias na API.
-Injeção de Dependências: Utilização de injeção de dependências para promover a modularidade e o desacoplamento.
-Geração Automática do Swagger: Documentação da API gerada automaticamente com OpenAPI 3.
-Geração de Slugs Automática: Utilização da biblioteca Slugify para criar slugs baseados nos nomes.
-Auditoria: Implementação de auditoria para rastrear a criação e atualização das entidades.
-Como Executar
-Localmente
-Clone o repositório Git:
+Bibliotecas Utilizadas
+Spring Boot
+Spring Reactive Web
+Spring Data R2DBC
+H2 Database
+Validation I/O
+Estrutura do Projeto
+Place: Define a entidade do domínio, suas propriedades e outros detalhes. Utiliza o record em vez de class para facilitar e reduzir a verbosidade na criação de objetos imutáveis, o que é útil para operações CRUD. Os records são usados para objetos que possuem apenas atributos e métodos getter/setter.
 
-bash
-Copiar código
-git clone <url-do-repositorio>
-Construa o projeto:
+PlaceRepository: É o repositório que trabalha com a entidade Place. No Spring Data, este repositório deve ser definido como uma interface.
 
-bash
-Copiar código
-./mvnw clean package
-Execute o projeto:
+PlaceService: Responsável pelas regras de negócio da aplicação. Utiliza o repositório que é injetado pelo Spring e implementa a operação de criação.
 
-bash
-Copiar código
-java -jar place-service/target/place-service-0.0.1-SNAPSHOT.jar
-A API estará disponível em localhost:8080. O Swagger pode ser visualizado em localhost:8080/swagger-ui.html.
+PlaceConfig: Configura o PlaceService.
 
-Usando Docker
-Clone o repositório Git:
+Controlador: Define os endpoints especificados nos requisitos.
 
-bash
-Copiar código
-git clone <url-do-repositorio>
-Construa o projeto:
-
-bash
-Copiar código
-./mvnw clean package
-Construa a imagem Docker:
-
-bash
-Copiar código
-./mvnw spring-boot:build-image
-Execute o container:
-
-bash
-Copiar código
-docker run --name place-service -p 8080:8080 -d place-service:0.0.1-SNAPSHOT
-A API estará disponível em localhost:8080. O Swagger pode ser visualizado em localhost:8080/swagger-ui.html.
-
-API Endpoints
-Para fazer as requisições HTTP abaixo, utilize a ferramenta httpie:
-
-POST /places
-
-bash
-Copiar código
-http POST :8080/places name="Place" state="State"
-Resposta esperada:
-
-json
-Copiar código
-HTTP/1.1 200 OK
-Content-Length: 129
-Content-Type: application/json
-
-{
-    "createdAt": "2024-08-20T19:00:07.241632",
-    "name": "Place",
-    "slug": "place",
-    "state": "State",
-    "updatedAt": "2028-08-20T19:00:07.241632"
-}
 Observações
-O atributo id é gerado automaticamente pelo banco de dados com auto incremento.
-A utilização de DTOs permite expor apenas as propriedades necessárias da entidade Place, evitando a exposição direta dos objetos de domínio.
-A biblioteca slugify é utilizada para garantir a consistência entre o nome e o slug.
+No teste inicial, o atributo id é exibido como "null" porque o valor é gerado pelo banco de dados com auto incremento, e não pelo Spring. Para evitar a exposição direta dos objetos de domínio, foi utilizado um DTO (Data Transfer Object), que é criado no pacote da API e contém apenas as propriedades que desejamos expor.
+
+Foi aplicado o princípio SOLID para separar as responsabilidades do código, promovendo uma melhor organização e manutenção.
+
+Após os testes iniciais, removemos a necessidade de passar as datas pelo usuário para evitar erros. A API foi ajustada para não exigir essas datas, utilizando recursos do Spring Data para gerenciar a criação e atualização automaticamente.
+
+A necessidade de um slug foi removida. O slug, que é um identificador baseado no nome, poderia causar inconsistências entre o nome e o slug. Utilizamos a biblioteca slugify para gerar o slug automaticamente e evitar erros.
+
+Os testes foram realizados com uma abordagem de integração fim a fim. Um ambiente web foi configurado para rodar em uma porta aleatória, testando a criação de um place com sucesso e um com erro. Um cliente web reativo foi injetado para enviar requisições, especificar o verbo, a URI e o corpo da requisição (place request com nome e estado). O JSON Path foi utilizado para verificar cada propriedade.
+Instruções para Execução
+Clonar o Repositório Git
+    git clone > https://github.com/jorgefernandorb/place_service
+Construir o Projeto
+    ./mvnw clean package
+Construir a Imagem Docker
+    ./mvnw spring-boot:build-image
+Executar o Container
+    docker run --name place-service -p 8080:8080 -d place-service:0.0.1-SNAPSHOT
+A API pode ser acessada em http://localhost:8080/places.
